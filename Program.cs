@@ -7,7 +7,13 @@ Expected result: int[] {1,2} since 1 and 2 are both available in sub arrays.
 
 int[] CommonItems(int[][] jaggedArray)
 {
+    if (jaggedArray.Length == 0)
+    {
+        return new int[0];
+    }
 
+    var commonElements = jaggedArray.Aggregate((current, next) => current.Intersect(next).ToArray());
+    return commonElements;
 }
 int[][] arr1 = { new int[] { 1, 2 }, new int[] { 2, 1, 5 } };
 int[] arr1Common = CommonItems(arr1);
@@ -20,6 +26,10 @@ Expected result: int[][] arr = {new int[]{2, 1}, new int[]{3, 2, 1}}
 */
 void InverseJagged(int[][] jaggedArray)
 {
+    for (int i = 0; i < jaggedArray.Length; i++)
+    {
+        Array.Reverse(jaggedArray[i]);
+    }
 
 }
 int[][] arr2 = { new int[] { 1, 2 }, new int[] { 1, 2, 3 } };
