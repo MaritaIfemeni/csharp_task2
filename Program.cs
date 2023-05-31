@@ -44,6 +44,19 @@ Expected result: int[][] arr = {new int[] {-1}, new int[]{-1, -1}}
 void CalculateDiff(int[][] jaggedArray)
 {
 
+    for (int i = 0; i < jaggedArray.Length; i++)
+    {
+        int[] innerArray = jaggedArray[i];
+        int[] diffArray = new int[innerArray.Length - 1];
+
+        for (int j = 0; j < innerArray.Length - 1; j++)
+        {
+            diffArray[j] = innerArray[j] - innerArray[j + 1];
+        }
+
+        jaggedArray[i] = diffArray;
+    }
+
 }
 int[][] arr3 = { new int[] { 1, 2 }, new int[] { 1, 2, 3 } };
 CalculateDiff(arr3);
@@ -57,7 +70,19 @@ Expected result: {{1,4},{2,5},{3,6}}
  */
 int[,] InverseRec(int[,] recArray)
 {
+    int rows = recArray.GetLength(0);
+    int cols = recArray.GetLength(1);
+    int[,] inverseArray = new int[cols, rows];
 
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            inverseArray[j, i] = recArray[i, j];
+        }
+    }
+
+    return inverseArray;
 }
 int[,] arr4 = { { 1, 2, 3 }, { 4, 5, 6 } };
 int[,] arr4Inverse = InverseRec(arr4);
@@ -71,10 +96,27 @@ string, number.
 - Finally print everything out. 
 Example: Demo("hello", 1, 2, "world") 
 Expected result: hello world; 3 */
-void Demo()
+void Demo(params object[] args)
 {
+    string sentence = "";
+    int sum = 0;
 
+    foreach (object arg in args)
+    {
+        if (arg is string)
+        {
+            sentence += arg.ToString() + " ";
+        }
+        else if (arg is int)
+        {
+            sum += (int)arg;
+        }
+    }
+
+    sentence = sentence.Trim();
+    Console.WriteLine($"{sentence}; {sum}");
 }
+
 Demo("hello", 1, 2, "world"); //should print out "hello world; 3"
 Demo("My", 2, 3, "daughter", true, "is");//should print put "My daughter is; 5"
 
@@ -82,10 +124,33 @@ Demo("My", 2, 3, "daughter", true, "is");//should print put "My daughter is; 5"
 /* Challenge 6. Write a function to swap 2 objects but only if they are of the same type 
 and if they’re string, lengths have to be more than 5. 
 If they’re numbers, they have to be more than 18. */
-void SwapTwo()
+static void SwapTwo<T>(ref T obj1, ref T obj2)
 {
-
+    if (obj1.GetType() == obj2.GetType())
+    {
+        if (obj1 is string && ((string)(object)obj1).Length > 5 && ((string)(object)obj2).Length > 5)
+        {
+            T temp = obj1;
+            obj1 = obj2;
+            obj2 = temp;
+        }
+        else if (obj1 is int && (int)(object)obj1 > 18 && (int)(object)obj2 > 18)
+        {
+            T temp = obj1;
+            obj1 = obj2;
+            obj2 = temp;
+        }
+        else
+        {
+            Console.WriteLine("No Swapping");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Objects are not of the same type.");
+    }
 }
+
 
 /* Challenge 7. Write a function that does the guessing game. 
 The function will think of a random integer number (lets say within 100) 
@@ -93,7 +158,36 @@ and ask the user to input a guess.
 It’ll repeat the asking until the user puts the correct answer. */
 void GuessingGame()
 {
+    Random random = new Random();
+    int randomNumber = random.Next(1, 101); // Generate a random number between 1 and 100
 
+    int guess;
+    do
+    {
+        Console.Write("Guess a nymber I am thinking: ");
+        string input = Console.ReadLine();
+
+        if (int.TryParse(input, out guess))
+        {
+            if (guess == randomNumber)
+            {
+                Console.WriteLine("This was right.");
+            }
+            else if (guess < randomNumber)
+            {
+                Console.WriteLine("This is too low.");
+            }
+            else
+            {
+                Console.WriteLine("This is too high.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid, give only numbers.");
+        }
+
+    } while (guess != randomNumber);
 }
 GuessingGame();
 
