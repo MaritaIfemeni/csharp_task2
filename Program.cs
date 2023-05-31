@@ -243,27 +243,50 @@ class OrderItem : Product
         this.Quantity = quantity;
     }
 
-    /* Override ToString() method so the item can be printed out conveniently with Id, Price, and Quantity */
+    public override string ToString()
+    {
+        return $"Id: {Id}, Price: {Price}, Quantity: {Quantity}";
+    }
 }
 
 class Cart
 {
     private List<OrderItem> _cart { get; set; } = new List<OrderItem>();
 
-    /* Write indexer property to get nth item from _cart */
+    public OrderItem this[int index]
+    {
+        get { return _cart[index]; }
+    }
 
-    /* Write indexer property to get items of a range from _cart */
+    public List<OrderItem> this[int startIndex, int endIndex]
+    {
+        get { return _cart.GetRange(startIndex, endIndex - startIndex + 1); }
+    }
 
     public void AddToCart(params OrderItem[] items)
     {
-        /* this method should check if each item exists --> increase value / or else, add item to cart */
+        foreach (var item in items)
+        {
+            var existingItem = _cart.FirstOrDefault(i => i.Id == item.Id);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += item.Quantity;
+            }
+            else
+            {
+                _cart.Add(item);
+            }
+        }
     }
-    /* Write another method called Index */
 
-    /* Write another method called GetCartInfo(), which out put 2 values: 
-    total price, total products in cart*/
+    public void GetCartInfo(out int totalPrice, out int totalQuantity)
+    {
+        totalPrice = _cart.Sum(item => item.Price * item.Quantity);
+        totalQuantity = _cart.Sum(item => item.Quantity);
+    }
 
-    /* Override ToString() method so Console.WriteLine(cart) can print
-    id, unit price, unit quantity of each item*/
-
+    public override string ToString()
+    {
+        return string.Join(Environment.NewLine, _cart.Select(item => $"Id: {item.Id}, Price: {item.Price}, Quantity: {item.Quantity}"));
+    }
 }
