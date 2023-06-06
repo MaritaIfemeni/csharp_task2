@@ -19,6 +19,16 @@ int[][] arr1 = { new int[] { 1, 2 }, new int[] { 2, 1, 5 } };
 int[] arr1Common = CommonItems(arr1);
 /* write method to print arr1Common */
 
+void PrintArray(int[] arr)
+{
+    foreach (int item in arr)
+    {
+        Console.WriteLine(item);
+    }
+}
+PrintArray(arr1Common);
+
+
 /* 
 Challenge 2. Inverse the elements of a jagged array.
 For example, int[][] arr = {new int[] {1,2}, new int[]{1,2,3}} 
@@ -29,12 +39,15 @@ void InverseJagged(int[][] jaggedArray)
     for (int i = 0; i < jaggedArray.Length; i++)
     {
         Array.Reverse(jaggedArray[i]);
+        Console.WriteLine(string.Join(", ", jaggedArray[i]));
     }
 
 }
 int[][] arr2 = { new int[] { 1, 2 }, new int[] { 1, 2, 3 } };
 InverseJagged(arr2);
 /* write method to print arr2 */
+
+
 
 /* 
 Challenge 3.Find the difference between 2 consecutive elements of an array.
@@ -55,6 +68,7 @@ void CalculateDiff(int[][] jaggedArray)
         }
 
         jaggedArray[i] = diffArray;
+        Console.WriteLine(string.Join(", ", jaggedArray[i]));
     }
 
 }
@@ -87,6 +101,23 @@ int[,] InverseRec(int[,] recArray)
 int[,] arr4 = { { 1, 2, 3 }, { 4, 5, 6 } };
 int[,] arr4Inverse = InverseRec(arr4);
 /* write method to print arr4Inverse */
+
+void Print2DArray(int[,] arr)
+{
+    int rows = arr.GetLength(0);
+    int cols = arr.GetLength(1);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            Console.Write(arr[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+Print2DArray(arr4Inverse);
 
 /* 
 Challenge 5. Write a function that accepts a variable number of params of any of these types: 
